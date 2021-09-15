@@ -1,0 +1,390 @@
+{
+    "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "User model",
+    "description": "user spec for Swagger",
+    "termsOfService": "http://swagger.io/terms/"
+  },
+  "host":"localhost:3000",
+  "basePath": "/api/v1/users",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for User"
+    }
+  ],
+  "servers":[
+      {
+          "url":"http:localhost:3000/api/v1",
+          "description":"Local Server"
+      }
+  ],
+  "schemes": ["http","https"],
+  "consumes": ["multipart/form-data","application/json"],
+  "produces": ["application/json"],
+  "paths":{
+      "/signup":{
+          "post":{
+              "tags":["Users"],
+              "description": "user creation / signup",
+              "parameters": [
+                {
+                    "name": "userId",
+                    "in": "body",
+                    "description": "user id ",
+                    "required": true,
+                    "type": "string",
+                    "default":"testuser"
+                  },
+                {
+                    "name": "name",
+                    "in": "body",
+                    "description": "name of user",
+                    "required": true,
+                    "type": "string",
+                    "default":"falseuser"
+        
+                  },
+                  {
+                    "name": "email",
+                    "in": "body",
+                    "description": "Email",
+                    "required": true,
+                    "type": "string",
+                    "default":"test@gmail.com"
+                  },
+                  {
+                    "name":"dob",
+                    "in":"body",
+                    "description":"Date Of Birth",
+                    "required":true,
+                    "type": "string",
+                    "default":"2001-01-23"
+                  },
+                  {
+                    "name":"org_id",
+                    "in":"body",
+                    "description":"organization Id",
+                    "required":true,
+                    "type": "string",
+                    "default":""
+                  },
+                  {
+                    "name": "password",
+                    "in": "body",
+                    "description": "Password",
+                    "required": true,
+                    "type": "string",
+                    "default":"1234678"
+                  },
+                  {
+                    "name":"createdOn",
+                    "in":"body",
+                    "description":"user creation date",
+                    "required":true,
+                    "type": "string",
+                    "default":"2001-01-23"
+                  }
+              ],
+              "responses": {
+                "200": {
+                  "description": "User successfully signed up",
+                  "schema": {
+                    "$ref": "#/definitions/signUp200"
+                  }
+                },
+                "403": {
+                    "description": "User with this email already exists",
+                    "schema": {
+                      "$ref": "#/definitions/signUp403"
+                    }
+                  },
+                "500": {
+                    "description": "failed to create user",
+                    "schema": {
+                      "$ref": "#/definitions/signUp500"
+                    }
+                  }
+              }
+          }
+      },
+      "/login": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Login",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [{
+              "name": "email",
+              "in": "body",
+              "description": "Username/Email of the User",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "body",
+              "description": "Password of the User",
+              "required": true,
+              "type": "string"
+            },
+            {
+                "name":"access_token",
+                "in":"header",
+                "description":"access_token",
+                "required":false,
+                "type":"string",
+                "default":""
+             }
+          ],
+          "responses": {
+            "200": {
+              "description": "Logged In Successfully",
+              "schema": {
+                "$ref": "#/definitions/login200"
+              }
+    
+            },
+            "403": {
+              "description": "Logged In Unauthorised",
+              "schema": {
+                "$ref": "#/definitions/login403"
+              }
+            },
+            "400": {
+              "description": "Already Logged In ",
+              "schema": {
+                "$ref": "#/definitions/login400"
+              }
+            }
+          }
+        }
+      },
+      "/upload": {
+        "post": {
+          "tags": [
+            "Users"
+          ],
+          "description": "Image Upload",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+                "name": "file",
+                "in": "formData",
+                "description": "file to upload",
+                "required": false,
+                "type": "file"
+              }
+          ],
+          "responses": {
+            "200": {
+              "description": "upload successful Successfully",
+              "schema": {
+                "$ref": "#/definitions/upload200"
+              }
+    
+            },
+            "403": {
+              "description": "error in uploading",
+              "schema": {
+                "$ref": "#/definitions/upload403"
+              }
+            }
+          }
+        }
+      }
+  },
+  "definitions":{
+    "login200":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "type": "string",
+            "example": "Loggied in Successfully"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "id": "5e4dc58f196c6b36601a9030",
+              "email": "manish.mohit2110+6@gmail.com",
+              "telephone": "8004624940",
+              "name": "manish mishra",
+              "answers": []
+            }
+          }
+        }
+      },
+      "login403":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "code": {
+            "type": "integer",
+            "example": "403"
+          },
+          "message": {
+            "type": "string",
+            "example": "Log In Unauthorised"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "message": "Log in Unauthorised"
+            }
+          }
+        }
+      },
+      "login400":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "code": {
+            "type": "integer",
+            "example": "400"
+          },
+          "message": {
+            "type": "string",
+            "example": "Already Logged In"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "message": " User is already Loggrd In"
+            }
+          }
+        }
+      },
+      "signUp200":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "type": "string",
+            "example": "User successfully signed up. "
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "status": true,
+              "message": "User Successfully created/signed up"
+            }
+          }
+        }
+      },
+      "signUp403":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "code": {
+            "type": "integer",
+            "example": "403"
+          },
+          "message": {
+            "type": "string",
+            "example": "User with this email already exists"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "status": false,
+              "message": "User with this email already exists"
+            }
+          }
+        }
+      },
+      "signUp500":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "code": {
+            "type": "integer",
+            "example": "500"
+          },
+          "message": {
+            "type": "string",
+            "example": "Failed to create user"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "status": false,
+              "message": "Failed to create User"
+            }
+          }
+        }
+      },
+      "upload200":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "code": {
+            "type": "integer",
+            "example": "200"
+          },
+          "message": {
+            "type": "string",
+            "example": "Image File Upload  Successfully"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "status": true,
+              "message": "Image Upload Successfully done."
+            }
+          }
+        }
+      },
+      "upload403":{
+        "properties": {
+          "status": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "code": {
+            "type": "integer",
+            "example": "403"
+          },
+          "message": {
+            "type": "string",
+            "example": "error in uploading"
+          },
+          "data": {
+            "type": "object",
+            "example": {
+              "status": false,
+              "message": "error in uploading"
+            }
+          }
+        }
+      }
+  }
+}
