@@ -4,8 +4,8 @@ const userController = require('./../../app/controllers/userController')
 const appconfig = require('./../../config/appConfig')
 const auth = require('./../middlewares/auth')
 const controller = require("../controllers/file.controller");
-
-
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./../../docs/swagger.json');
 // //images
 // const Grid = require("gridfs-stream");
 // const connection = require('./../../db');
@@ -17,6 +17,9 @@ module.exports.setRouter= (app) => {
     //let baseUrl = `${appconfig.apiversion}/users`;
    let baseUrl = `/api/v1/users`;
     console.log(baseUrl);
+
+app.use(`${baseUrl}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
     // defining routes.
     
     app.post(`${baseUrl}/signup`,auth.isAuthorized,userController.signUpFunction);
